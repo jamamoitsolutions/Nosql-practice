@@ -9,14 +9,14 @@ const cors = require("cors");
 
 
 // set public folder as public
-app.use(express.static('app/public'));
+app.use(require('express').static('app/public'));
 // set the view engine to ejs
 app.set("view engine", "ejs");
 
 require("dotenv").config();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(require('express').json());
+app.use(require('express').urlencoded({ extended: false }));
 app.use(cors()); 
 
 // base route
