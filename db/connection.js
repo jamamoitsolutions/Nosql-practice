@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
  require("dotenv").config();
 mongoose
   .connect(process.env.MONGODB_URI   , {
+    dbName: process.env.DB_NAME,
   ssl: true,
   tls: true,
   // tlsInsecure: true, // Bypass certificate validation (useful for testing)
