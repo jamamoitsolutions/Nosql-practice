@@ -1,5 +1,5 @@
 {
-  "name": "nosql-practice",
+  "name": "jamamo-be",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^9.9.0",
     "nodemon": "^3.1.4"
   }
 }
