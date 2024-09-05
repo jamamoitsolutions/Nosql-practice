@@ -1,6 +1,5 @@
 const userRoutes = require("express").Router();
 const userController = require("../controllers/user");
-const { use } = require("./auth");
 
 userRoutes.get("/profile", userController.profile);
 userRoutes.get("/list", userController.list);

@@ -6,6 +6,7 @@ app.use(logger('dev'));
 app.use(require('express').json());
 require('./app/db/connection');
 const cors = require("cors");
+const cron = require("node-cron");
 
 
 // set public folder as public
@@ -23,8 +24,8 @@ app.use(cors());
 app.get("/", (req, res) => {
   res
     .status(200)
-    .send({ message: "Welcome to jamamo backend portal (EC2).",
-  updated_at: "12-02-2024 09:02 IST" });
+    .send({ message: "Welcome to jamamo backend portal.",
+  updated_at: "05-09-2024 04:13 PM IST" });
     });
 
 // all routes

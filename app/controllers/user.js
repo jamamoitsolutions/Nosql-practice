@@ -1,8 +1,53 @@
 const User = require('../models/User');
 const Department = require('../models/Department');
+const { getPagination, pagination } = require('../helpers/pagination');
+const MaskData = require('maskdata');
+
 exports.profile = async(req, res) => {
-    const getUser = await User.findById(req?.user?.id);
-    res.json({message: 'Profile route', user: getUser});
+  const {profile} = req?.query;
+    let getUser;
+    if(profile === "azure"){
+      getUser = await User.findById(req?.user?.id);
+    }else{
+    getUser = await User.findById(req?.user?.id);
+    }
+    if(!getUser){
+      getUser = await User.findById(req?.user?.id);
+        return res.status(404).json({success: false,message: 'User not found'});
+    }
+    const maskPhoneOptions = {
+      // Character to mask the data. The default value is '*'
+      maskWith: "*",
+    
+      // Should be positive Integer
+      // If the starting 'n' digits need to be visible/unmasked
+      // Default value is 4
+      unmaskedStartDigits: 4,
+    
+      // Should be positive Integer
+      // If the ending 'n' digits need to be visible/unmasked
+      // Default value is 1. 
+      unmaskedEndDigits: 3
+    };
+    res.json({success: true, message: 'Profile fetched successfully',
+       user: {
+        id: getUser?.id,
+        user_id: getUser?.user_id,
+        fullname:
+        getUser?.display_name ? getUser?.display_name:(getUser?.first_name + " " + getUser?.last_name),
+        first_name: getUser?.first_name,
+        last_name: getUser?.last_name || " ",
+        email: getUser?.email,
+        job_title: getUser?.job_title,
+        department: getUser?.department,
+        role: getUser?.role,
+        mobile: getUser?.mobile_phone ? MaskData.maskPhone(getUser?.mobile_phone, maskPhoneOptions) : "",
+        reporting_manager: getUser?.reporting_manager,
+        is_active: getUser?.is_active,
+        myReferalID: getUser?.myReferalID,
+        isCourseOwner: false,
+        isDashboardOwner: false,
+       }});
 }
 
 exports.list = async(req, res) => {
@@ -98,6 +143,60 @@ exports.deptList = async(req, res) => {
     },data: getList});
 
 }
+
+exports.getPublicInfo = async (req, res) => {
+    try {
+       console.log("getPublicAnouncement api ");
+       const users_count = 0;
+      // active users count.
+    //   const users_count = await user.count({
+    //     where: {
+    //       is_active: true,
+    //     },
+    //   });
+      // active courses count.
+      const courses_count = 0;
+    //   const courses_count = await courses.count({
+    //     where: {
+    //       is_active: true,
+    //     },
+    //   });
+      // active dashboard count.
+      const dashboards_count = 0;
+  
+      const { page, per_page } = req.query;
+      const { limit, offset } = getPagination(page, per_page);
+  
+    //   let { count, rows } = await public_anouncement.findAndCountAll({
+    //     where: {
+    //       is_active: true,
+    //     },
+    //     limit,
+    //     offset,
+    //     order: [["createdAt", "DESC"]],
+    //   });
+  
+    //   const public_anouncement_info = pagination({
+    //     data: rows,
+    //     count,
+    //     page,
+    //     per_page,
+    //   });
+  
+      res.status(200).send({
+        success: true,
+        users_count,
+        courses_count,
+        public_anouncement_info : [],
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong. We are looking into it.",
+        error: err.message,
+      });
+    }
+  };
 
 exports.deptListWithUsers = async(req, res) => {
     const {search, per_page=10 , page=1} = req?.query;
