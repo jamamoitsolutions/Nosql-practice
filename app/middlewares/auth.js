@@ -7,17 +7,26 @@ const fetch = require("../helpers/fetch");
 exports.auth = (req, res, next) => {
   try{
     const {authorization} = req.headers;
+    // console.log("authorization: ", authorization);
     if(!authorization){
-      return res.status(403).json({error: 'Unauthorized'});
+      return res.status(403).json({success: false, message: 'Unauthorized'});
     }
-    const verify = jwt.verify(authorization.slice(7, authorization.length), process.env.JWT_SECRET);
+    let verify;
+    try{
+    verify = jwt.verify(authorization, process.env.JWT_SECRET);
+    }catch(err){
     if(!verify){
-      return res.status(403).json({error: 'Unauthorized'});
+      verify = jwt.verify(authorization.slice(7, authorization.length), process.env.JWT_SECRET);
+    }
+  }
+    if(!verify){
+      return res.status(403).json({success: false, message: 'Unauthorized'});
     }
     req.user = verify;
     next();
   }catch(err){
-    return res.status(500).json({error: 'Unauthorized'}); 
+    console.log("error in auth middleware: ", err);
+    return res.status(500).json({success: false, message: 'Unauthorized', error: err}); 
   }
 };
 
@@ -137,6 +146,7 @@ exports.verifyMirosoftToken = async (req, res, next) => {
         }
         req.AD_user_info = {
           id: graphResponse?.data?.id,
+          display_name: graphResponse?.data?.displayName,
           first_name: graphResponse?.data?.givenName,
           last_name: last_name,
           email: graphResponse?.data?.mail,

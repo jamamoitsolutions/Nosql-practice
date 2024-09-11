@@ -16,7 +16,9 @@ const departmentSchema = new Schema({
         type: Boolean,
         default: true,
     },
-    });
+    }, {
+        timestamps: true  // Add createdAt and updatedAt fields automatically
+      });
 
     const Department = mongoose.model("Department", departmentSchema);
 

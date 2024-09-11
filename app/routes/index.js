@@ -11,6 +11,7 @@ const {auth} = require("../middlewares/auth");
 Allrouter.use("/auth", router);
 Allrouter.use(auth);
 Allrouter.use("/user", userRoutes);
+Allrouter.use("/admin", require("./admin"));
 
 module.exports = Allrouter;
 

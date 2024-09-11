@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const { User } = require('../models/index');
 const jwt = require('jsonwebtoken');
 const fetch = require('../helpers/fetch');
 const transporter = require('../helpers/mailconfig');

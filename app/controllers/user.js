@@ -1,9 +1,9 @@
-const User = require('../models/User');
-const Department = require('../models/Department');
+const { User, Department } = require('../models/index');
 const { getPagination, pagination } = require('../helpers/pagination');
 const MaskData = require('maskdata');
 
 exports.profile = async(req, res) => {
+  console.log("db: ", db)
   const {profile} = req?.query;
     let getUser;
     if(profile === "azure"){
