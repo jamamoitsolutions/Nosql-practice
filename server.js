@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
   res
     .status(200)
     .send({ message: "Welcome to jamamo backend portal.",
-  updated_at: "12-09-2024 02:53 AM IST" });
+  updated_at: "16-09-2024 11:52 AM IST" });
     });
 
 // all routes

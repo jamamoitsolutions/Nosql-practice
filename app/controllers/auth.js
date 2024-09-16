@@ -6,27 +6,29 @@ const MaskData = require('maskdata');
 
 exports.register = async(req, res) => {
     try {
-        const {name,email, dob, dept_id, password, role, is_active} = req?.body;
+        const {first_name, last_name,email, password, is_active=true} = req?.body;
         const userExist = await User.findOne({ email: email });
     
         if (userExist) {
-          return res.status(422).json({ error: "User already exist" });
+          return res.status(422).json({success: false, message: "Email already exist" });
         } else {
           const user = new User({
-            name,
+            auth: 'basic',
+            dept_id: "66d984304a3b3b153d8dd029",
+            department: "Learner",
+            display_name: first_name + " " + last_name,
+            first_name,
+            last_name,
             email,
-            dob,
-            dept_id,
             password,    
-            role,
             is_active
           });
           await user.save();
-          res.status(201).json({ message: "Signup succesful" });
+          res.status(201).json({success: true, message: "Registration successful" });
         }
       } catch (err) {
         console.log(err);
-        return res.status(422).json({ error: "Something went wrong" });
+        return res.status(422).json({success: false, error: "Something went wrong" });
       }
 }
 

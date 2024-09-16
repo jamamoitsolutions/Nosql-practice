@@ -1,4 +1,4 @@
-const { User, Department } = require('../models/index');
+const { User, Department, Course, Batch, BatchesMember } = require('../models/index');
 const { getPagination, pagination } = require('../helpers/pagination');
 const MaskData = require('maskdata');
 
@@ -147,46 +147,46 @@ exports.deptList = async(req, res) => {
 exports.getPublicInfo = async (req, res) => {
     try {
        console.log("getPublicAnouncement api ");
-       const users_count = 0;
+       let users_count = 0;
       // active users count.
-    //   const users_count = await user.count({
-    //     where: {
-    //       is_active: true,
-    //     },
-    //   });
+      try{
+          users_count = await User.countDocuments({ is_active: true });
+      }catch(err){
+          console.log("error to get users count: ", err)
+      }
       // active courses count.
-      const courses_count = 0;
-    //   const courses_count = await courses.count({
-    //     where: {
-    //       is_active: true,
-    //     },
-    //   });
-      // active dashboard count.
-      const dashboards_count = 0;
+      let courses_count = 0;
+      try{
+        courses_count = await Course.countDocuments({ is_active: true });
+    }catch(err){
+        console.log("error to get courses count: ", err)
+    }
+
+          // active projects count.
+          let projects_count = 10;
+          try{
+            projects_count = await Project.countDocuments({ is_active: true });
+        }catch(err){
+            console.log("error to get projects count: ", err)
+        }
+
+                // active client count.
+                let clients_count = 5;
+                try{
+                  clients_count = await Client.countDocuments({ is_active: true });
+              }catch(err){
+                  console.log("error to get clients count: ", err)
+              }
   
       const { page, per_page } = req.query;
-      const { limit, offset } = getPagination(page, per_page);
-  
-    //   let { count, rows } = await public_anouncement.findAndCountAll({
-    //     where: {
-    //       is_active: true,
-    //     },
-    //     limit,
-    //     offset,
-    //     order: [["createdAt", "DESC"]],
-    //   });
-  
-    //   const public_anouncement_info = pagination({
-    //     data: rows,
-    //     count,
-    //     page,
-    //     per_page,
-    //   });
   
       res.status(200).send({
         success: true,
         users_count,
         courses_count,
+        projects_count,
+        clients_count,
+        years_of_experience: 7,
         public_anouncement_info : [],
       });
     } catch (err) {
